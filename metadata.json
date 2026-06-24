@@ -1,0 +1,6 @@
+{
+  "name": "Epic Game Shop",
+  "description": "Premium Free Fire top-up store with instant secure delivery, live purchase feeds, UID verification, and fully customized Admin management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
