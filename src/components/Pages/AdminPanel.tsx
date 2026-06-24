@@ -5,7 +5,7 @@ import {
   Trash2, Plus, Edit, EyeOff, Eye, ShieldCheck, Mail, LogOut, CheckCircle, 
   X, AlertTriangle, Play, RefreshCw, RefreshCw as LoopIcon, Check, Signal, Power,
   Upload, Palette, Smartphone, Activity, TrendingUp, DollarSign, Clock, HelpCircle,
-  Laptop, ShieldAlert, Heart, Megaphone, Menu, User, ListCollapse
+  Laptop, ShieldAlert, Heart, Megaphone, Menu, User, ListCollapse, Lock
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import DashboardPage from './Dashboard';
@@ -60,7 +60,7 @@ export default function AdminPanel({
   const [statusPublished, setStatusPublished] = useState(false);
 
   // Active sub-pages in Admin Panel
-  const [activeAdminTab, setActiveAdminTab] = useState<'dashboard' | 'customizer' | 'products' | 'categories' | 'api' | 'telegram' | 'feeds'>('dashboard');
+  const [activeAdminTab, setActiveAdminTab] = useState<'dashboard' | 'customizer' | 'products' | 'categories' | 'api' | 'telegram' | 'feeds' | 'security'>('dashboard');
 
   // Diagnostic simulator active page and customizer subsections
   const [simulatedPage, setSimulatedPage] = useState<string>('dashboard');
@@ -226,12 +226,14 @@ export default function AdminPanel({
   // Handle Login Authentication
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'admin123') {
+    const expectedUser = websiteSettings.adminUsername || 'admin';
+    const expectedPass = websiteSettings.adminPassword || 'admin123';
+    if (username === expectedUser && password === expectedPass) {
       setIsAdminLoggedIn(true);
       localStorage.setItem('egs_admin_logged_in', 'true');
       setLoginError(null);
     } else {
-      setLoginError('Invalid credentials. (admin / admin123)');
+      setLoginError('Invalid credentials.');
     }
   };
 
@@ -662,6 +664,7 @@ export default function AdminPanel({
                   { id: 'api', name: 'API Mapping Node', icon: Signal },
                   { id: 'telegram', name: 'Telegram Core', icon: MessageCircle },
                   { id: 'feeds', name: 'Live Purchase Feeds', icon: RefreshCw },
+                  { id: 'security', name: 'Admin Security (ID/Pass)', icon: Lock },
                 ].map((item, index) => {
                   const Icon = item.icon;
                   const isActive = activeAdminTab === item.id;
@@ -832,6 +835,7 @@ export default function AdminPanel({
           { id: 'api', name: 'API Mapping Node', icon: Signal },
           { id: 'telegram', name: 'Telegram Core', icon: MessageCircle },
           { id: 'feeds', name: 'Live Purchase Feeds', icon: RefreshCw },
+          { id: 'security', name: 'Admin Security', icon: Lock },
         ].map((item) => {
           const Icon = item.icon;
           const isTabActive = activeAdminTab === item.id;
@@ -1229,6 +1233,75 @@ export default function AdminPanel({
                         )}
                       </div>
                       <p className="text-[10px] text-slate-400 font-normal leading-normal">Selected local files are instant encoded to standard browser data scheme and saved perpetually in memory.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer Brand Logo customization widget */}
+                <div className="border-t border-slate-200 pt-4 mt-2.5 space-y-3">
+                  <h5 className="text-[11px] font-black uppercase text-slate-800 tracking-wider">Footer Brand Customizer (Garena Customizer)</h5>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-bold text-slate-700">
+                    <div className="space-y-1.5">
+                      <label>Footer Brand Text</label>
+                      <input 
+                        type="text" 
+                        value={websiteSettings.footerLogoText || ''}
+                        onChange={(e) => onUpdateWebsite({ ...websiteSettings, footerLogoText: e.target.value })}
+                        placeholder="Garena"
+                        className="w-full bg-white border border-slate-200 focus:border-slate-400 rounded-xl px-3 py-2 text-xs font-bold"
+                      />
+                    </div>
+                    
+                    <div className="space-y-1.5">
+                      <label>Footer Logo/Text Color Accent</label>
+                      <div className="flex gap-2">
+                        <input 
+                          type="color" 
+                          value={websiteSettings.footerLogoColor || '#FF1F25'}
+                          onChange={(e) => onUpdateWebsite({ ...websiteSettings, footerLogoColor: e.target.value })}
+                          className="h-8 w-8 rounded-lg cursor-pointer border border-slate-200 p-0 overflow-hidden bg-transparent shrink-0"
+                        />
+                        <input 
+                          type="text" 
+                          value={websiteSettings.footerLogoColor || ''}
+                          onChange={(e) => onUpdateWebsite({ ...websiteSettings, footerLogoColor: e.target.value })}
+                          placeholder="#FF1F25"
+                          className="w-full bg-white border border-slate-200 focus:border-slate-400 rounded-xl px-3 py-2 text-xs font-mono font-bold"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5 sm:col-span-2">
+                      <label>Footer Brand Logo Image (replaces default Swirl SVG if set)</label>
+                      <div className="flex gap-2">
+                        <input 
+                          type="text" 
+                          value={websiteSettings.footerLogoUrl || ''}
+                          onChange={(e) => onUpdateWebsite({ ...websiteSettings, footerLogoUrl: e.target.value })}
+                          placeholder="https://example.com/footer-logo.png"
+                          className="flex-1 bg-white border border-slate-200 focus:border-slate-400 rounded-xl px-3 py-2 text-[11px]"
+                        />
+                        <label className="bg-slate-900 hover:bg-slate-800 text-amber-400 px-3 py-2 rounded-xl text-3xs font-black flex items-center justify-center gap-1.5 cursor-pointer shrink-0">
+                          <Upload className="h-3.5 w-3.5" />
+                          <span>Upload Footer Logo</span>
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            className="hidden" 
+                            onChange={(e) => handleImageFileLoad(e, (base64) => onUpdateWebsite({ ...websiteSettings, footerLogoUrl: base64 }))} 
+                          />
+                        </label>
+                        {websiteSettings.footerLogoUrl && (
+                          <button
+                            type="button"
+                            onClick={() => onUpdateWebsite({ ...websiteSettings, footerLogoUrl: '' })}
+                            className="text-2xs font-bold text-red-500 hover:underline px-1"
+                          >
+                            Clear
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2632,6 +2705,57 @@ export default function AdminPanel({
                     </button>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {activeAdminTab === 'security' && (
+            <div className="space-y-6 animate-fade-in text-left">
+              <div className="border-b border-slate-100 pb-3">
+                <h3 className="text-sm font-black uppercase text-slate-500 tracking-wider">Admin Security Settings</h3>
+                <p className="text-[10px] text-slate-400">Manage and change your Admin Panel Username and Password.</p>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4 text-xs font-bold text-slate-700">
+                <h4 className="font-black text-slate-900 uppercase flex items-center gap-2">
+                  <Lock className="h-4.5 w-4.5 text-indigo-600" />
+                  <span>Update Login Credentials</span>
+                </h4>
+
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-2xs font-extrabold text-slate-500 uppercase tracking-wider">Admin Username</label>
+                    <input
+                      type="text"
+                      value={websiteSettings.adminUsername || 'admin'}
+                      onChange={(e) => onUpdateWebsite({ ...websiteSettings, adminUsername: e.target.value })}
+                      placeholder="admin"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold focus:border-indigo-500 focus:outline-none"
+                    />
+                    <p className="text-[10px] text-slate-400 font-normal">Use this username to access your admin dashboard.</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-2xs font-extrabold text-slate-500 uppercase tracking-wider">Admin Password</label>
+                    <input
+                      type="password"
+                      value={websiteSettings.adminPassword || 'admin123'}
+                      onChange={(e) => onUpdateWebsite({ ...websiteSettings, adminPassword: e.target.value })}
+                      placeholder="admin123"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm font-mono tracking-wider focus:border-indigo-500 focus:outline-none"
+                    />
+                    <p className="text-[10px] text-slate-400 font-normal">Create a strong password to secure your admin panel from unauthorized access.</p>
+                  </div>
+                </div>
+
+                <div className="bg-amber-50 border border-amber-100/70 p-3.5 rounded-xl space-y-1 text-slate-700">
+                  <p className="text-[11px] font-black text-amber-800 uppercase tracking-wide flex items-center gap-1">
+                    <span>⚠️ Important Note</span>
+                  </p>
+                  <p className="text-[10px] text-amber-600 font-bold leading-normal">
+                    Make sure to click the <span className="bg-amber-100 px-1 py-0.5 rounded text-amber-800 font-black">Publish Changes</span> button in the top header after modifying these fields so they are permanently saved on the server!
+                  </p>
+                </div>
               </div>
             </div>
           )}

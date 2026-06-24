@@ -11,13 +11,10 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, onClose, currentPage, onNavigate, websiteSettings }: SidebarProps) {
-  const showProfile = websiteSettings?.showProfileTab !== false;
-
   const menuItems = [
     { id: 'dashboard', name: 'Home', icon: Home },
     { id: 'items', name: 'Services', icon: Zap },
     { id: 'pay_info', name: 'Payment Page', icon: CreditCard }, // A static payment info/page instruction
-    ...(showProfile ? [{ id: 'profile', name: 'Profile', icon: User }] : [])
   ];
 
   const sidebarBg = websiteSettings?.colorNavBg || '#ffffff';

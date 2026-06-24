@@ -1,4 +1,4 @@
-import { CheckCircle2, ChevronRight, ShoppingCart, MessageCircle, Users, Copy, Check } from 'lucide-react';
+import { CheckCircle2, ChevronRight, ShoppingCart, MessageCircle, Copy, Check } from 'lucide-react';
 import { Product, WebsiteSettings } from '../../types';
 import { useState } from 'react';
 import EditableField from './EditableField';
@@ -163,24 +163,6 @@ export default function SuccessPage({ selectedProduct, uid, playerName, redeemCo
             Please wait for manual processing to be completed.
           </div>
         </div>
-      </div>
-
-      {/* Support Options */}
-      <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex items-center justify-between text-left">
-        <div>
-          <h5 className="text-xs font-bold text-slate-800">Need Immediate Assistance?</h5>
-          <p className="text-[10px] text-slate-400 mt-0.5">Reach out direct to our live manual dispatcher.</p>
-        </div>
-        <a
-          href={`https://t.me/${supportTelegram.replace('@', '')}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold px-3.5 py-2 rounded-xl shadow-xs shrink-0 flex items-center gap-1 transition-all active:scale-95"
-          id="success-support-telegram-btn"
-        >
-          <Users className="h-3.5 w-3.5" />
-          <span>Live Chat Support</span>
-        </a>
       </div>
 
       {/* Go Back button */}

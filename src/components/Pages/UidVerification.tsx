@@ -373,18 +373,6 @@ export default function UidVerification({ selectedProduct, apiSettings, websiteS
 
       </div>
 
-      {/* FLOATING SUPPORT HEADSET ICON WIDGET (FLOATING TOOL) */}
-      <a 
-        href={`https://t.me/${(websiteSettings?.supportTelegram || 'epicgameshop_support').replace('@', '')}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-40 bg-[#0F172A] hover:bg-slate-900 border border-slate-700/50 text-white p-3.5 rounded-full shadow-xl transition-all active:scale-90 flex items-center justify-center hover:shadow-[0_4px_16px_rgba(15,23,42,0.3)] cursor-pointer"
-        title="Contact Live Support Chat"
-        id="floating-support-bubble"
-      >
-        <MessageSquare className="h-5.5 w-5.5 text-amber-400 fill-amber-300/10" />
-      </a>
-
     </div>
   );
 }

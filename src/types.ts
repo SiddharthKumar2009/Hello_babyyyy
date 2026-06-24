@@ -125,6 +125,15 @@ export interface WebsiteSettings {
   // 5. Success Page Customization
   successHeadline?: string;      // e.g. "Payment Submission Received!"
   successSubtext?: string;       // e.g. "Your Free Fire diamonds topup order is under review..."
+
+  // 6. Admin Credentials Customization
+  adminUsername?: string;
+  adminPassword?: string;
+
+  // Footer custom brand logo
+  footerLogoUrl?: string;        // Custom footer logo image (replaces default Garena SVG)
+  footerLogoText?: string;       // Custom footer brand text (defaults to "Garena")
+  footerLogoColor?: string;      // Custom footer logo color (defaults to "#FF1F25")
 }
 
 export interface OrderState {

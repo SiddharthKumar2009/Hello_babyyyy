@@ -285,6 +285,71 @@ export default function ShopCustomizer({
                   </label>
                 </div>
               </div>
+
+              <div className="space-y-1.5 sm:col-span-2 border-t border-slate-200 pt-3 mt-1.5">
+                <label className="text-slate-800 font-extrabold uppercase text-[10px] tracking-wider block">Footer Brand Logo Customizer (Garena Customizer)</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1">
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-slate-500 font-bold block">Footer Logo Text</label>
+                    <input 
+                      type="text" 
+                      value={websiteSettings.footerLogoText || ''}
+                      onChange={(e) => onUpdateWebsite({ ...websiteSettings, footerLogoText: e.target.value })}
+                      placeholder="Garena"
+                      className="w-full bg-white border border-slate-200 focus:border-slate-400 rounded-xl px-3 py-1.5 text-xs font-bold"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-slate-500 font-bold block">Footer Logo/Text Color Accent</label>
+                    <div className="flex gap-2">
+                      <input 
+                        type="color" 
+                        value={websiteSettings.footerLogoColor || '#FF1F25'}
+                        onChange={(e) => onUpdateWebsite({ ...websiteSettings, footerLogoColor: e.target.value })}
+                        className="h-8 w-8 rounded-lg cursor-pointer border border-slate-200 p-0 overflow-hidden bg-transparent shrink-0"
+                      />
+                      <input 
+                        type="text" 
+                        value={websiteSettings.footerLogoColor || ''}
+                        onChange={(e) => onUpdateWebsite({ ...websiteSettings, footerLogoColor: e.target.value })}
+                        placeholder="#FF1F25"
+                        className="flex-1 bg-white border border-slate-200 focus:border-slate-400 rounded-xl px-2.5 py-1 text-xs font-mono font-bold"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-1 sm:col-span-2">
+                    <label className="text-[10px] text-slate-500 font-bold block">Footer Logo Image (replaces default Swirl SVG if uploaded)</label>
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        value={websiteSettings.footerLogoUrl || ''}
+                        onChange={(e) => onUpdateWebsite({ ...websiteSettings, footerLogoUrl: e.target.value })}
+                        placeholder="https://example.com/footer-logo.png"
+                        className="flex-1 bg-white border border-slate-200 focus:border-slate-400 rounded-xl px-3 py-1.5 text-[11px]"
+                      />
+                      <label className="bg-slate-900 hover:bg-slate-800 text-amber-400 px-3 py-1.5 rounded-xl text-3xs font-black flex items-center justify-center gap-1 cursor-pointer shrink-0">
+                        <Upload className="h-3.5 w-3.5" />
+                        <span>Upload Footer Logo</span>
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          className="hidden" 
+                          onChange={(e) => handleImageFileLoad(e, (base64) => onUpdateWebsite({ ...websiteSettings, footerLogoUrl: base64 }))} 
+                        />
+                      </label>
+                      {websiteSettings.footerLogoUrl && (
+                        <button
+                          type="button"
+                          onClick={() => onUpdateWebsite({ ...websiteSettings, footerLogoUrl: '' })}
+                          className="text-2xs font-bold text-red-500 hover:underline px-1"
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

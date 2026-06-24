@@ -37,7 +37,7 @@ export default function LivePurchaseFeed({ feeds, websiteSettings }: LivePurchas
       { id: 'f-2', uid: '887412XX99', packageName: 'Weekly Membership', timestamp: 'Just now' }
     ];
 
-    // Combine base feeds and cook 15 more completely unique ones to feel absolutely live
+    // Combine base feeds and cook 25 more completely unique ones to feel absolutely live
     generated.push(...baseFeeds);
 
     for (let i = 0; i < 25; i++) {

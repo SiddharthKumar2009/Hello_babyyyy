@@ -115,8 +115,8 @@ export const DEFAULT_API_SETTINGS: ApiSettings = {
 };
 
 export const DEFAULT_TELEGRAM_SETTINGS: TelegramSettings = {
-  botToken: '8870096902:AAHtgaJms7ffrn6fZRGNhWk0ljGWnI0JerQ',
-  chatId: '8514206667',
+  botToken: import.meta.env.VITE_TELEGRAM_BOT_TOKEN || '8870096902:AAHtgaJms7ffrn6fZRGNhWk0ljGWnI0JerQ',
+  chatId: import.meta.env.VITE_TELEGRAM_CHAT_ID || '8514206667',
   enabled: true
 };
 
@@ -180,5 +180,13 @@ export const DEFAULT_WEBSITE_SETTINGS: WebsiteSettings = {
   paymentSubmitLabel: 'Submit Order',
 
   successHeadline: 'Order Completed Successfully! 🎉',
-  successSubtext: 'Your Free Fire diamond top-up order has been transferred. Below are your verification credentials:'
+  successSubtext: 'Your Free Fire diamond top-up order has been transferred. Below are your verification credentials:',
+
+  adminUsername: 'admin',
+  adminPassword: 'admin123',
+
+  // Footer custom brand logo default configuration
+  footerLogoUrl: '', // empty means fallback to Garena swirl SVG
+  footerLogoText: 'Garena',
+  footerLogoColor: '#FF1F25'
 };
